@@ -11,7 +11,7 @@ export default function ConfirmationPage() {
     const searchParams = useSearchParams();
     const [loading, setLoading] = useState(false);
 
-    const token = searchParams.get("token"); 
+    const token = searchParams.get("token");
     console.log("token", token);
 
     useEffect(() => {
@@ -19,16 +19,19 @@ export default function ConfirmationPage() {
             expireTokenAndRedirect();
         };
 
+        // Fix the back navigation behavior using history.pushState
         history.pushState(null, "", window.location.href);
         window.addEventListener("popstate", handleBackNavigation);
 
-        return () => window.removeEventListener("popstate", handleBackNavigation);
+        return () => {
+            window.removeEventListener("popstate", handleBackNavigation);
+        };
     }, []);
 
     const expireTokenAndRedirect = async () => {
         if (!token) {
             console.error("No token found!");
-            router.replace("/contact");
+            router.replace("/contact");  // Redirect to contact page if no token found
             return;
         }
 
@@ -52,14 +55,14 @@ export default function ConfirmationPage() {
             console.error("Error expiring token:", error);
         } finally {
             setLoading(false);
-            router.replace("/contact"); 
+            router.replace("/contact"); // Redirect to contact page after the token has expired
         }
     };
 
     return (
-        <main className="min-h-screen flex bg-[#FBF8FC] items-center justify-center">
+        <main className="min-h-screen flex items-center justify-center bg-[#FBF8FC]">
             <Card className="w-full max-w-xl space-y-8 p-8 text-center shadow-lg rounded-lg bg-white">
-                {loading && <Progress />} 
+                {loading && <Progress />} {/* Show loading indicator while processing */}
 
                 <h1 className="text-2xl font-semibold pt-10 text-gray-900">
                     You Made The Right Call!
@@ -67,12 +70,14 @@ export default function ConfirmationPage() {
                 <p className="text-gray-600 mt-2">
                     Get ready for more expert nutrition tips and smart wellness insights.
                 </p>
+
                 <Button
-                    onClick={() => router.push("/")}
+                    onClick={() => router.push("/")} // Redirect to home page
                     className="mt-6 px-6 py-2 bg-[#783894] text-white font-medium rounded-full hover:bg-purple-700 transition"
                 >
                     Back to Home
                 </Button>
+
                 <div className="pb-6"></div>
             </Card>
         </main>

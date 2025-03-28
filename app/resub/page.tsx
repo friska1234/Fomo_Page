@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import { Card } from "../component/ui/card";
 import { Button } from "../component/button";
 import { CheckCircle } from "lucide-react";
-import { Progress } from "../component/ui/progress"; 
+import { Progress } from "../component/ui/progress";
 
 export default function ConfirmationPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [loading, setLoading] = useState(false);
 
-    const token = searchParams.get("token"); 
+    const token = searchParams.get("token");
     console.log("token", token);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export default function ConfirmationPage() {
     const expireTokenAndRedirect = async () => {
         if (!token) {
             console.error("No token found!");
-            router.replace("/contact"); 
+            router.replace("/contact");
             return;
         }
 
@@ -53,14 +53,14 @@ export default function ConfirmationPage() {
             console.error("Error expiring token:", error);
         } finally {
             setLoading(false);
-            router.replace("/contact"); 
+            router.replace("/contact");
         }
     };
 
     return (
         <main className="min-h-screen flex items-center justify-center bg-[#FBF8FC]">
             <Card className="w-full max-w-xl p-8 text-center shadow-lg rounded-lg bg-white space-y-6">
-                {loading && <Progress />} 
+                {loading && <Progress />}
 
                 <div className="flex pt-10 justify-center">
                     <CheckCircle className="w-12 h-12 text-green-500" />

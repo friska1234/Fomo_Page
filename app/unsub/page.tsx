@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card } from "../component/ui/card";
 import { Button } from "../component/button";
-import { Progress } from "../component/ui/progress";  
+import { Progress } from "../component/ui/progress";
 
 export default function UnsubscribePage() {
     const router = useRouter();
@@ -12,31 +12,33 @@ export default function UnsubscribePage() {
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const token = searchParams.get("token");  
-console.log("token",token);
-     useEffect(() => {
+    const token = searchParams.get("token");
+    console.log("token", token);
+
+    // Fetch user data from localStorage
+    useEffect(() => {
         const storedUserInfo = localStorage.getItem("userInfo");
         if (storedUserInfo) {
             setUserData(JSON.parse(storedUserInfo));
         }
     }, []);
 
-     useEffect(() => {
+    // Handle browser back button navigation
+    useEffect(() => {
         const handleBackNavigation = () => {
             expireTokenAndRedirect();
         };
 
-         history.pushState(null, "", window.location.href);
+        history.pushState(null, "", window.location.href);
         window.addEventListener("popstate", handleBackNavigation);
 
         return () => window.removeEventListener("popstate", handleBackNavigation);
     }, []);
 
-     const expireTokenAndRedirect = async () => {
-
+    const expireTokenAndRedirect = async () => {
         if (!token) {
             console.error("No token found!");
-            router.replace("/contact");  
+            router.replace("/contact");
             return;
         }
 
@@ -60,7 +62,7 @@ console.log("token",token);
             console.error("Error expiring token:", error);
         } finally {
             setLoading(false);
-            router.replace("/contact");  
+            router.replace("/contact");
         }
     };
 
@@ -94,7 +96,7 @@ console.log("token",token);
             if (!response.ok) throw new Error("Resubscription failed");
 
             console.log("Resubscribed successfully");
-            router.replace("/sub");  
+            router.replace("/sub");
         } catch (error) {
             console.error("Error resubscribing:", error);
         } finally {

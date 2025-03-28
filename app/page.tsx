@@ -5,15 +5,16 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Heart, Brain, Utensils, Sparkles } from "lucide-react";
 import { Card } from "./component/ui/card";
 import { Button } from "./component/button";
-import { Progress } from "./component/ui/progress";  
+import { Progress } from "./component/ui/progress";
 
 export default function Home() {
   const [userName, setUserName] = useState("User");
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
 
+  // Fetch user data based on token, only if token is present
   useEffect(() => {
     const fetchUserData = async () => {
       if (!token) {
@@ -44,9 +45,10 @@ export default function Home() {
     fetchUserData();
   }, [token]);
 
+  // Handle unsubscribe logic
   const handleUnsubscribe = async () => {
     try {
-      setLoading(true);  
+      setLoading(true);
 
       const storedUserInfo = localStorage.getItem("userInfo");
       const parsedUserInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
@@ -77,7 +79,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center py-12 px-4">
       <Card className="max-w-3xl w-full md:w-2/3 p-8 space-y-8 bg-white rounded-lg shadow-lg">
-        {loading && <Progress />}  
+        {loading && <Progress />}
 
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
@@ -119,7 +121,7 @@ export default function Home() {
             <button
               onClick={handleUnsubscribe}
               className="text-gray-500 hover:text-gray-700 text-sm font-medium"
-              disabled={loading}  
+              disabled={loading}
             >
               {loading ? "Processing..." : "Unsubscribe"}
             </button>
@@ -130,7 +132,7 @@ export default function Home() {
   );
 }
 
-function Feature({ icon: Icon, color, title, description }: { icon: any; color: string; title: string; description: string }) {
+ function Feature({ icon: Icon, color, title, description }: { icon: any; color: string; title: string; description: string }) {
   return (
     <div className="flex items-start gap-4">
       <div className={`p-3 bg-${color}-100 rounded-lg`}>
